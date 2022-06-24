@@ -45,6 +45,20 @@ android {
             excludes += '/META-INF/{AL2.0,LGPL2.1}'
         }
     }
+
+    productFlavors {
+        flavorDimensions "environment"
+
+        Dev {
+            resValue("string", "app_name", "octa_dev")
+            applicationId "bit.hemant.git.trends.dev"
+            buildConfigField "String", "BASE_URL", "\"https://api.github.com/\""
+        }
+        Production {
+            resValue("string", "app_name", "OctaTrend")
+            buildConfigField "String", "BASE_URL", "\"https://api.github.com/\""
+        }
+    }
 }
 
 dependencies {
@@ -82,4 +96,8 @@ dependencies {
     // Room
     implementation "androidx.room:room-runtime:2.4.2"
     kapt "androidx.room:room-compiler:2.4.2"
+
+    //Retro
+    implementation "com.squareup.retrofit2:retrofit:2.9.0"
+    implementation "com.squareup.retrofit2:converter-jackson:2.9.0"
 }

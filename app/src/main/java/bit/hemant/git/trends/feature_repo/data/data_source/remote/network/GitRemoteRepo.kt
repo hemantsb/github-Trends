@@ -1,6 +1,6 @@
-package bit.hemant.git.trends.feature_repo.domain.model.network
+package bit.hemant.git.trends.feature_repo.data.data_source.remote.network
 
-data class GitRepoListResponseItem(
+data class GitRemoteRepo(
     var allow_forking: Boolean?,
     var archive_url: String?,
     var archived: Boolean?,

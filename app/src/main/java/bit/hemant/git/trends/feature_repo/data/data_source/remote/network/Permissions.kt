@@ -1,4 +1,4 @@
-package bit.hemant.git.trends.feature_repo.domain.model.network
+package bit.hemant.git.trends.feature_repo.data.data_source.remote.network
 
 data class Permissions(
     var admin: Boolean?,
