@@ -9,7 +9,7 @@ class GitLocalRepositoryImpl(
     private val dao: RepoDao
 ) : GitLocalRepository {
 
-    override fun getRepoList(): Flow<List<Repo>> {
+    override suspend fun getRepoList(): List<Repo> {
         return dao.getAllRepo()
     }
 

@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.Flow
 interface RepoDao {
 
     @Query("SELECT * from repo")
-    fun getAllRepo(): Flow<List<Repo>>
+    suspend fun getAllRepo(): List<Repo>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertRepos(repos: List<Repo>)
