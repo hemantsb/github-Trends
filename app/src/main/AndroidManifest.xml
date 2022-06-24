@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="bit.hemant.git.trends">
 
+    <uses-permission android:name="android.permission.INTERNET" />
     <application
         android:name=".GitTrendsApp"
         android:allowBackup="true"
