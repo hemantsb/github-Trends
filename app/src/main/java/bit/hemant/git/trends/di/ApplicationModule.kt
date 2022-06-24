@@ -2,7 +2,16 @@ package bit.hemant.git.trends.di
 
 import android.app.Application
 import android.content.Context
+import androidx.room.Room
 import bit.hemant.git.trends.BuildConfig
+import bit.hemant.git.trends.feature_repo.data.data_source.local.RepoDatabase
+import bit.hemant.git.trends.feature_repo.data.data_source.remote.GitRemoteDataSource
+import bit.hemant.git.trends.feature_repo.data.data_source.remote.GitRemoteDataSourceImpl
+import bit.hemant.git.trends.feature_repo.data.data_source.remote.GitRemoteService
+import bit.hemant.git.trends.feature_repo.data.repository.GitLocalRepositoryImpl
+import bit.hemant.git.trends.feature_repo.data.repository.GitRemoteRepositoryImpl
+import bit.hemant.git.trends.feature_repo.domain.repository.GitLocalRepository
+import bit.hemant.git.trends.feature_repo.domain.repository.GitRemoteRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -32,4 +41,29 @@ class ApplicationModule {
     }
 
 
+    @Provides
+    @Singleton
+    fun providesDatabase(app: Application): RepoDatabase {
+        return Room.databaseBuilder(app, RepoDatabase::class.java, RepoDatabase.DATABASE_NAME)
+            .build()
+    }
+
+    @Provides
+    @Singleton
+    fun providesRepoLocalRepository(db: RepoDatabase): GitLocalRepository {
+        return GitLocalRepositoryImpl(db.repoDao())
+    }
+
+    @Provides
+    @Singleton
+    fun providesGitRemoteDataSourceRepository(service: GitRemoteService): GitRemoteDataSource {
+        return GitRemoteDataSourceImpl(service)
+    }
+
+
+    @Provides
+    @Singleton
+    fun providesRepoRemoteRepository(remoteDataSource: GitRemoteDataSource): GitRemoteRepository {
+        return GitRemoteRepositoryImpl(remoteDataSource)
+    }
 }

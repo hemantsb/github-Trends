@@ -3,7 +3,7 @@ package bit.hemant.git.trends.feature_repo.domain.repository
 import bit.hemant.git.trends.feature_repo.domain.model.Repo
 import kotlinx.coroutines.flow.Flow
 
-interface GitRepoRepository {
+interface GitLocalRepository {
 
     fun getRepoList(): Flow<List<Repo>>
 
