@@ -11,7 +11,6 @@ import bit.hemant.git.trends.feature_repo.domain.util.AsyncResult
 import bit.hemant.git.trends.feature_repo.domain.util.RepoOrder
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -30,7 +29,7 @@ class GitRepoListViewModel @Inject constructor(private val repoUseCase: RepoUseC
     fun onEvent(event: RepoEvent) {
         when (event) {
             is RepoEvent.Order -> {
-                if (state.value.repoOrder==event.repoOrder) {
+                if (state.value.repoOrder == event.repoOrder) {
                     return
                 }
                 getLocalRepo(event.repoOrder)
@@ -39,13 +38,18 @@ class GitRepoListViewModel @Inject constructor(private val repoUseCase: RepoUseC
             RepoEvent.Refresh -> {
                 getRepos(state.value.repoOrder)
             }
+
+            RepoEvent.PullRefresh -> {
+                _state.value = _state.value.copy(pullToRefresh = true)
+                getRepos(state.value.repoOrder)
+            }
         }
     }
 
     private fun getLocalRepo(repoOrder: RepoOrder) {
         viewModelScope.launch {
             repoUseCase.localReposUseCase.invoke(repoOrder).collect {
-                handleRepoResponse(repoOrder,it)
+                handleRepoResponse(repoOrder, it)
             }
         }
 
@@ -57,19 +61,27 @@ class GitRepoListViewModel @Inject constructor(private val repoUseCase: RepoUseC
             repoUseCase.remoteReposUseCase.invoke(repoOrder).catch {
                 getLocalRepo(repoOrder)
             }.collect {
-                handleRepoResponse(repoOrder,it)
+                handleRepoResponse(repoOrder, it)
             }
         }
     }
 
-    private fun handleRepoResponse(repoOrder: RepoOrder,result: AsyncResult<List<Repo>>) {
+    private fun handleRepoResponse(repoOrder: RepoOrder, result: AsyncResult<List<Repo>>) {
         when (result) {
             AsyncResult.Loading -> _state.value = state.value.copy(loading = true)
             is AsyncResult.ErrorMessage -> _state.value = state.value.copy(loading = false)
             is AsyncResult.Success -> {
-                Log.e("SUCCESS","REPO CHANGES: ${result.data.joinToString { "${it.name} :: ${it.starCount}" }}")
+                Log.e(
+                    "SUCCESS",
+                    "REPO CHANGES: ${result.data.joinToString { "${it.name} :: ${it.starCount}" }}"
+                )
                 _state.value =
-                    state.value.copy(loading = false, repos = result.data, repoOrder = repoOrder)
+                    state.value.copy(
+                        loading = false,
+                        repos = result.data,
+                        repoOrder = repoOrder,
+                        pullToRefresh = false
+                    )
             }
             else -> {}
         }

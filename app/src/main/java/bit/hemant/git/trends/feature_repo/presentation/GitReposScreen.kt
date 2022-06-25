@@ -1,5 +1,6 @@
 package bit.hemant.git.trends.feature_repo.presentation
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -27,6 +28,8 @@ import bit.hemant.git.trends.feature_repo.presentation.components.RepoItem
 import bit.hemant.git.trends.ui.theme.Typography
 import bit.hemant.git.trends.ui.theme.lightBody
 import bit.hemant.git.trends.ui.theme.theme40
+import com.google.accompanist.swiperefresh.SwipeRefresh
+import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 
 @Preview
 @Composable
@@ -35,6 +38,7 @@ fun RepoScreenPrview() {
 }
 
 
+@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun GitReposScreen(viewModel: GitRepoListViewModel = hiltViewModel()) {
@@ -104,17 +108,23 @@ fun GitReposScreen(viewModel: GitRepoListViewModel = hiltViewModel()) {
             }
         } else {
             val collapsedState = remember() { mutableStateOf(-1) }
-            LazyColumn(modifier = Modifier.fillMaxSize()) {
-                items(state.repos) { repo ->
-                    RepoItem(repo, collapsedState) {
-                        collapsedState.value = if (collapsedState.value == it) -1 else it
+            SwipeRefresh(
+                state = rememberSwipeRefreshState(viewModel.state.value.pullToRefresh),
+                onRefresh = { viewModel.onEvent(RepoEvent.PullRefresh) }) {
+                LazyColumn(modifier = Modifier.fillMaxSize()) {
+                    items(state.repos) { repo ->
+                        RepoItem(repo, collapsedState) {
+                            collapsedState.value = if (collapsedState.value == it) -1 else it
+                        }
+                        Divider(
+                            color = Color.LightGray,
+                            modifier = Modifier.fillMaxHeight()
+                        )
                     }
-                    Divider(
-                        color = Color.LightGray,
-                        modifier = Modifier.fillMaxHeight()
-                    )
                 }
             }
+
+
         }
     }
 }
