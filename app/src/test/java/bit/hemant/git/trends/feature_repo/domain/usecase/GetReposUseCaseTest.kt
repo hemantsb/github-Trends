@@ -8,7 +8,6 @@ import bit.hemant.git.trends.feature_repo.domain.util.AsyncResult
 import bit.hemant.git.trends.feature_repo.domain.util.RepoOrder
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 import org.junit.Before
 import org.junit.Test
@@ -23,29 +22,9 @@ class GetReposUseCaseTest {
 
     @Before
     fun setUp() {
-
         localRepository = FakeRepoLocalRepository()
         remoteRepository = FakeRepoRemoteRepository()
-
         getReposUseCase = GetReposUseCase(remoteRepository, localRepository)
-//        val reposToInsert = mutableListOf<Repo>()
-//        ('a'..'z').forEachIndexed { index, c ->
-//            val dummyText = c.toString()
-//            reposToInsert.add(
-//                Repo(
-//                    id = index,
-//                    name = dummyText,
-//                    owner = dummyText,
-//                    language = dummyText,
-//                    forkCount = Random(30).nextInt(),
-//                    starCount = Random(50).nextInt()
-//                )
-//            )
-//        }
-//        reposToInsert.shuffle()
-//        runBlocking {
-//            localRepository.insertRepos(reposToInsert)
-//        }
     }
 
     @Test
