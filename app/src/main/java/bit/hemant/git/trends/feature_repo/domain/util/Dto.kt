@@ -8,6 +8,7 @@ fun GitRemoteRepo.toRepo(): Repo {
         id = id,
         name = name.orDash(),
         owner = owner?.login.orDash(),
+        repoImage=owner?.avatar_url,
         starCount = stargazers_count ?: 0,
         forkCount = forks_count ?: 0,
         language = language.orDash()

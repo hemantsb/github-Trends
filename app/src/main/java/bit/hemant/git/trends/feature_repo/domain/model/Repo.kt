@@ -7,6 +7,7 @@ import androidx.room.PrimaryKey
 class Repo(
     val name: String,
     val owner: String,
+    val repoImage: String?,
     val starCount: Int,
     val forkCount: Int,
     val language: String,
