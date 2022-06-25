@@ -1,5 +1,6 @@
 package bit.hemant.git.trends.feature_repo.presentation
 
+import android.util.Log
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
@@ -48,12 +49,17 @@ fun GitReposScreen(viewModel: GitRepoListViewModel = hiltViewModel()) {
         if (state.loading && state.repos.isEmpty()) {
             LoadingShimmerList(imageHeight = RECIPE_IMAGE_HEIGHT.dp)
         } else if (state.repos.isEmpty()) {
-            NoRepoDataView()
+            NoRepoDataView() {
+                Log.e("NOREPO", "refresh clicked")
+                viewModel.refresh()
+            }
         } else {
-
+            var collapsedState = remember() { mutableStateOf(-1) }
             LazyColumn(modifier = Modifier.fillMaxSize()) {
                 items(state.repos) { repo ->
-                    RepoItem(repo)
+                    RepoItem(repo, collapsedState) {
+                        collapsedState.value = it
+                    }
                     Divider(
                         color = Color.LightGray,
                         modifier = Modifier.fillMaxHeight()

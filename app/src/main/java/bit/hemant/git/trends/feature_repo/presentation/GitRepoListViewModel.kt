@@ -16,7 +16,7 @@ import javax.inject.Inject
 
 
 @HiltViewModel
-class GitRepoListViewModel @Inject constructor(val repoUseCase: RepoUseCase) : ViewModel() {
+class GitRepoListViewModel @Inject constructor(private val repoUseCase: RepoUseCase) : ViewModel() {
 
     private val _state = mutableStateOf(RepoState())
     val state: State<RepoState> = _state
@@ -24,6 +24,10 @@ class GitRepoListViewModel @Inject constructor(val repoUseCase: RepoUseCase) : V
 
     init {
         getRepos(RepoOrder.Title)
+    }
+
+    fun refresh() {
+        getRepos(state.value.repoOrder)
     }
 
 

@@ -22,7 +22,7 @@ import bit.hemant.git.trends.ui.theme.mintGreen
 const val Button_Height = 48
 
 @Composable
-fun NoRepoDataView() {
+fun NoRepoDataView(onClick: () -> Unit) {
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -70,7 +70,7 @@ fun NoRepoDataView() {
                 .fillMaxWidth()
                 .heightIn(Button_Height.dp)
                 .align(BottomCenter),
-            onClick = { },
+            onClick = onClick,
             border = BorderStroke(1.dp, mintGreen),
             shape = RoundedCornerShape(10),
             colors = ButtonDefaults.outlinedButtonColors(contentColor = mintGreen)
