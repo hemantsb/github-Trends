@@ -1,18 +1,15 @@
 package bit.hemant.git.trends.feature_repo.presentation
 
-import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.DropdownMenu
-import androidx.compose.material.IconButton
-import androidx.compose.material.Text
-import androidx.compose.material.TopAppBar
+import androidx.compose.material.*
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -57,14 +54,12 @@ fun GitReposScreen(viewModel: GitRepoListViewModel = hiltViewModel()) {
             LazyColumn(modifier = Modifier.fillMaxSize()) {
                 items(state.repos) { repo ->
                     RepoItem(repo)
-                    Spacer(modifier = Modifier.height(16.dp))
-
+                    Divider(
+                        color = Color.LightGray,
+                        modifier = Modifier.fillMaxHeight()
+                    )
                 }
-
             }
-
-
         }
-
     }
 }

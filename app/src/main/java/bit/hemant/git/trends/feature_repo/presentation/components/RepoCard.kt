@@ -1,5 +1,6 @@
 package bit.hemant.git.trends.feature_repo.presentation.components
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
@@ -12,28 +13,35 @@ import bit.hemant.git.trends.feature_repo.domain.model.Repo
 
 @Composable
 fun RepoItem(item: Repo) {
+    Row(modifier = Modifier
+        .padding(16.dp)
+        .clickable {
 
-    Row(modifier = Modifier.padding(16.dp)) {
+        }) {
 
-        RepoOwnerImage(
-            url = item.repoImage,
-            contentDescription = item.name
-        )
+        Box(
+            modifier = Modifier
+                .fillMaxHeight()
+                .align(Alignment.CenterVertically)
+        ) {
+            RepoOwnerImage(
+                url = item.repoImage,
+                contentDescription = item.name
+            )
+        }
 
-        Column() {
+        Column(modifier = Modifier.padding(start = 16.dp)) {
             Text(
                 text = item.owner,
                 modifier = Modifier
-                    .fillMaxWidth(0.85f)
-                    .wrapContentWidth(Alignment.Start),
-                style = MaterialTheme.typography.h3
+                    .fillMaxWidth(),
+                style = MaterialTheme.typography.h6
             )
             Text(
                 text = item.name,
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .wrapContentWidth(Alignment.End),
-                style = MaterialTheme.typography.h5
+                    .fillMaxWidth(),
+                style = MaterialTheme.typography.body2
             )
         }
 
