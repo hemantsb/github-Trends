@@ -15,7 +15,7 @@ import org.junit.Test
 class GetReposUseCaseTest {
 
 
-    private lateinit var getReposUseCase: GetReposUseCase
+    private lateinit var getReposUseCase: GetRepoUseCase
     private lateinit var localRepository: GitLocalRepository
     private lateinit var remoteRepository: GitRemoteRepository
 
@@ -24,7 +24,7 @@ class GetReposUseCaseTest {
     fun setUp() {
         localRepository = FakeRepoLocalRepository()
         remoteRepository = FakeRepoRemoteRepository()
-        getReposUseCase = GetReposUseCase(remoteRepository, localRepository)
+        getReposUseCase = GetRepoUseCase(remoteRepository, localRepository)
     }
 
     @Test

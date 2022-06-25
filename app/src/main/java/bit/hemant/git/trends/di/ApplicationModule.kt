@@ -12,7 +12,9 @@ import bit.hemant.git.trends.feature_repo.data.repository.GitLocalRepositoryImpl
 import bit.hemant.git.trends.feature_repo.data.repository.GitRemoteRepositoryImpl
 import bit.hemant.git.trends.feature_repo.domain.repository.GitLocalRepository
 import bit.hemant.git.trends.feature_repo.domain.repository.GitRemoteRepository
-import bit.hemant.git.trends.feature_repo.domain.usecase.GetReposUseCase
+import bit.hemant.git.trends.feature_repo.domain.usecase.GetLocalReposUseCase
+import bit.hemant.git.trends.feature_repo.domain.usecase.GetRepoUseCase
+import bit.hemant.git.trends.feature_repo.domain.usecase.RepoUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -73,9 +75,10 @@ class ApplicationModule {
     fun providesRepoUseCase(
         remote: GitRemoteRepository,
         local: GitLocalRepository
-    ): GetReposUseCase {
-        return GetReposUseCase(
-            remote = remote, local = local
+    ): RepoUseCase {
+        return RepoUseCase(
+            localReposUseCase = GetLocalReposUseCase(local),
+            remoteReposUseCase = GetRepoUseCase(remote, local)
         )
     }
 }

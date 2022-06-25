@@ -9,7 +9,7 @@ import bit.hemant.git.trends.feature_repo.domain.util.toRepoList
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
-class GetReposUseCase(
+class GetRepoUseCase(
     private val remote: GitRemoteRepository,
     private val local: GitLocalRepository
 ) {
@@ -19,17 +19,10 @@ class GetReposUseCase(
             emit(AsyncResult.Loading)
             val remoteList = remote.getRepoList().toRepoList()
             local.insertRepos(remoteList)
-//            val orders: List<Repo> = local.getRepoList().sortedBy { repo ->
-//                val condition = when (repoOrder) {
-//                    RepoOrder.Title -> repo.name
-//                    RepoOrder.Star -> repo.starCount
-//                }
-//                condition == true
-//            }
-            val allRepo = local.getRepoList()
+            val allRepos = local.getRepoList()
             val orderedRepo = when (repoOrder) {
-                RepoOrder.Title -> allRepo.sortedBy { it.name }
-                RepoOrder.Star -> allRepo.sortedBy { it.starCount }
+                RepoOrder.Title -> allRepos.sortedBy { it.name }
+                RepoOrder.Star -> allRepos.sortedBy { it.starCount }
             }
             emit(AsyncResult.Success(orderedRepo))
         }

@@ -2,6 +2,7 @@ package bit.hemant.git.trends.feature_repo.data.repository
 
 import bit.hemant.git.trends.feature_repo.domain.model.Repo
 import bit.hemant.git.trends.feature_repo.domain.repository.GitLocalRepository
+import bit.hemant.git.trends.feature_repo.domain.util.RepoOrder
 
 class FakeRepoLocalRepository : GitLocalRepository {
 
