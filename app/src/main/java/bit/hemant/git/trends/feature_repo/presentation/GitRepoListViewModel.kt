@@ -1,5 +1,6 @@
 package bit.hemant.git.trends.feature_repo.presentation
 
+import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
@@ -9,6 +10,7 @@ import bit.hemant.git.trends.feature_repo.domain.usecase.GetReposUseCase
 import bit.hemant.git.trends.feature_repo.domain.util.AsyncResult
 import bit.hemant.git.trends.feature_repo.domain.util.RepoOrder
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -28,7 +30,10 @@ class GitRepoListViewModel @Inject constructor(val useCase: GetReposUseCase) : V
 
     private fun getRepos(repoOrder: RepoOrder) {
         viewModelScope.launch {
-            useCase.invoke(repoOrder).collect {
+            useCase.invoke(repoOrder).catch {
+                Log.e("GETREPO", "Exceptin $it")
+
+            }.collect {
                 handleRepoResponse(it)
             }
         }
