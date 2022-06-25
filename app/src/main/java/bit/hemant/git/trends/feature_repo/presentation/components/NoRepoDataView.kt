@@ -9,6 +9,7 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.OutlinedButton
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.BottomCenter
 import androidx.compose.ui.Alignment.Companion.Center
 import androidx.compose.ui.Modifier
@@ -17,7 +18,8 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import bit.hemant.git.trends.R
 import bit.hemant.git.trends.ui.theme.Typography
-import bit.hemant.git.trends.ui.theme.lightBody
+import bit.hemant.git.trends.ui.theme.headlineBlack
+import bit.hemant.git.trends.ui.theme.headlineGrey
 import bit.hemant.git.trends.ui.theme.mintGreen
 
 
@@ -36,7 +38,7 @@ fun NoRepoDataView(onClick: () -> Unit) {
                 .align(Center),
             contentAlignment = Center,
         ) {
-            Column {
+            Column(horizontalAlignment = Alignment.CenterHorizontally) {
 
                 Box(
                     modifier = Modifier
@@ -51,17 +53,17 @@ fun NoRepoDataView(onClick: () -> Unit) {
                 Text(
                     text = "Something went wrong..",
                     maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
-                    style = MaterialTheme.typography.h5,
-                    modifier = Modifier.padding(top = 32.dp)
+                    style = Typography.headlineLarge,
+                    modifier = Modifier.padding(top = 32.dp),
+                    color = headlineBlack
                 )
                 Text(
                     text = "An alien is probably blocking your signal",
                     maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
-                    style = Typography.bodySmall,
-                    modifier = Modifier.padding(vertical = 8.dp),
-                    color = lightBody
+                    style = Typography.headlineSmall,
+                    modifier = Modifier
+                        .padding(vertical = 8.dp),
+                    color = headlineGrey
                 )
             }
 
@@ -78,7 +80,7 @@ fun NoRepoDataView(onClick: () -> Unit) {
             shape = RoundedCornerShape(10),
             colors = ButtonDefaults.outlinedButtonColors(contentColor = mintGreen)
         ) {
-            Text(text = "Retry", style = MaterialTheme.typography.button)
+            Text(text = "RETRY", style = MaterialTheme.typography.button)
         }
 
 
