@@ -1,6 +1,7 @@
 package bit.hemant.git.trends.feature_repo.presentation
 
 import android.annotation.SuppressLint
+import android.util.Log
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -14,8 +15,10 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
@@ -25,11 +28,13 @@ import bit.hemant.git.trends.feature_repo.presentation.components.LoadingShimmer
 import bit.hemant.git.trends.feature_repo.presentation.components.NoRepoDataView
 import bit.hemant.git.trends.feature_repo.presentation.components.RECIPE_IMAGE_HEIGHT
 import bit.hemant.git.trends.feature_repo.presentation.components.RepoItem
+import bit.hemant.git.trends.manager.StoreRepoResponseTime
 import bit.hemant.git.trends.ui.theme.Typography
 import bit.hemant.git.trends.ui.theme.lightBody
 import bit.hemant.git.trends.ui.theme.theme40
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
+import kotlinx.coroutines.launch
 
 @Preview
 @Composable
@@ -47,7 +52,8 @@ fun GitReposScreen(viewModel: GitRepoListViewModel = hiltViewModel()) {
     val MENU_BUTTON_WIDTH = 120
     val state = viewModel.state.value
     val scaffoldState: ScaffoldState = rememberScaffoldState()
-
+    val repoStore = StoreRepoResponseTime(LocalContext.current)
+    val scope = rememberCoroutineScope()
     val expanded = remember { mutableStateOf(false) }
 
     Scaffold(topBar = {
@@ -107,11 +113,16 @@ fun GitReposScreen(viewModel: GitRepoListViewModel = hiltViewModel()) {
                 viewModel.onEvent(RepoEvent.Refresh)
             }
         } else {
+
             val collapsedState = remember() { mutableStateOf(-1) }
             SwipeRefresh(
                 state = rememberSwipeRefreshState(viewModel.state.value.pullToRefresh),
                 onRefresh = { viewModel.onEvent(RepoEvent.PullRefresh) }) {
+
                 LazyColumn(modifier = Modifier.fillMaxSize()) {
+                    scope.launch {
+                        repoStore.updateRepoResponseTime(System.currentTimeMillis())
+                    }
                     items(state.repos) { repo ->
                         RepoItem(repo, collapsedState) {
                             collapsedState.value = if (collapsedState.value == it) -1 else it
