@@ -1,6 +1,5 @@
 package bit.hemant.git.trends.feature_repo.presentation
 
-import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
@@ -9,8 +8,9 @@ import bit.hemant.git.trends.feature_repo.domain.model.Repo
 import bit.hemant.git.trends.feature_repo.domain.usecase.RepoUseCase
 import bit.hemant.git.trends.feature_repo.domain.util.AsyncResult
 import bit.hemant.git.trends.feature_repo.domain.util.RepoOrder
+import bit.hemant.git.trends.feature_repo.domain.util.succeeded
+import bit.hemant.git.trends.manager.StoreRepoResponseTime
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -21,11 +21,13 @@ class GitRepoListViewModel @Inject constructor(private val repoUseCase: RepoUseC
 
     private val _state = mutableStateOf(RepoState())
     val state: State<RepoState> = _state
+    var repoStore: StoreRepoResponseTime? = null
 
-
-    init {
+    fun initRepoStore(repoStore: StoreRepoResponseTime) {
+        this.repoStore = repoStore
         getRepos(RepoOrder.Title)
     }
+
 
     fun onEvent(event: RepoEvent) {
         when (event) {
@@ -48,7 +50,6 @@ class GitRepoListViewModel @Inject constructor(private val repoUseCase: RepoUseC
     }
 
 
-
     private fun getLocalRepo(repoOrder: RepoOrder) {
         viewModelScope.launch {
             repoUseCase.localReposUseCase.invoke(repoOrder).collect {
@@ -65,6 +66,9 @@ class GitRepoListViewModel @Inject constructor(private val repoUseCase: RepoUseC
                 getLocalRepo(repoOrder)
             }.collect {
                 handleRepoResponse(repoOrder, it)
+                if (it.succeeded) {
+                    repoStore?.updateRepoResponseTime(System.currentTimeMillis())
+                }
             }
         }
     }
@@ -74,10 +78,6 @@ class GitRepoListViewModel @Inject constructor(private val repoUseCase: RepoUseC
             AsyncResult.Loading -> _state.value = state.value.copy(loading = true)
             is AsyncResult.ErrorMessage -> _state.value = state.value.copy(loading = false)
             is AsyncResult.Success -> {
-                Log.e(
-                    "SUCCESS",
-                    "REPO CHANGES: ${result.data.joinToString { "${it.name} :: ${it.starCount}" }}"
-                )
                 _state.value =
                     state.value.copy(
                         loading = false,

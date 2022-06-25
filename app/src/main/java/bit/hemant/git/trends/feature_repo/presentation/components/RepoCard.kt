@@ -43,14 +43,14 @@ fun RepoItem(item: Repo, collapsedState: MutableState<Int>, onItemClick: (index:
                 text = item.owner,
                 modifier = Modifier
                     .fillMaxWidth(),
-                style = MaterialTheme.typography.h6
+                style = Typography.bodySmall,
+                color = lightBody
             )
             Text(
                 text = item.name,
                 modifier = Modifier
                     .fillMaxWidth(),
-                style = Typography.bodySmall,
-                color = lightBody
+                style = MaterialTheme.typography.h6
             )
 
             if (collapsedState.value == item.id) {
