@@ -1,5 +1,6 @@
 package bit.hemant.git.trends.feature_repo.presentation
 
+import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
@@ -26,30 +27,49 @@ class GitRepoListViewModel @Inject constructor(private val repoUseCase: RepoUseC
         getRepos(RepoOrder.Title)
     }
 
-    fun refresh() {
-        getRepos(state.value.repoOrder)
+    fun onEvent(event: RepoEvent) {
+        when (event) {
+            is RepoEvent.Order -> {
+                if (state.value.repoOrder==event.repoOrder) {
+                    return
+                }
+                getLocalRepo(event.repoOrder)
+            }
+
+            RepoEvent.Refresh -> {
+                getRepos(state.value.repoOrder)
+            }
+        }
+    }
+
+    private fun getLocalRepo(repoOrder: RepoOrder) {
+        viewModelScope.launch {
+            repoUseCase.localReposUseCase.invoke(repoOrder).collect {
+                handleRepoResponse(repoOrder,it)
+            }
+        }
+
     }
 
 
     private fun getRepos(repoOrder: RepoOrder) {
         viewModelScope.launch {
             repoUseCase.remoteReposUseCase.invoke(repoOrder).catch {
-                repoUseCase.localReposUseCase.invoke(repoOrder).collect {
-                    handleRepoResponse(it)
-                }
+                getLocalRepo(repoOrder)
             }.collect {
-                handleRepoResponse(it)
+                handleRepoResponse(repoOrder,it)
             }
         }
     }
 
-    private fun handleRepoResponse(result: AsyncResult<List<Repo>>) {
+    private fun handleRepoResponse(repoOrder: RepoOrder,result: AsyncResult<List<Repo>>) {
         when (result) {
             AsyncResult.Loading -> _state.value = state.value.copy(loading = true)
             is AsyncResult.ErrorMessage -> _state.value = state.value.copy(loading = false)
             is AsyncResult.Success -> {
+                Log.e("SUCCESS","REPO CHANGES: ${result.data.joinToString { "${it.name} :: ${it.starCount}" }}")
                 _state.value =
-                    state.value.copy(loading = false, repos = result.data)
+                    state.value.copy(loading = false, repos = result.data, repoOrder = repoOrder)
             }
             else -> {}
         }

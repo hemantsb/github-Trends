@@ -19,6 +19,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import bit.hemant.git.trends.feature_repo.domain.util.RepoOrder
 import bit.hemant.git.trends.feature_repo.presentation.components.LoadingShimmerList
 import bit.hemant.git.trends.feature_repo.presentation.components.NoRepoDataView
 import bit.hemant.git.trends.feature_repo.presentation.components.RECIPE_IMAGE_HEIGHT
@@ -63,7 +64,10 @@ fun GitReposScreen(viewModel: GitRepoListViewModel = hiltViewModel()) {
                     IconButton(modifier = Modifier
                         .width(MENU_BUTTON_WIDTH.dp)
                         .padding(end = 8.dp),
-                        onClick = { /*TODO*/ }) {
+                        onClick = {
+                            viewModel.onEvent(RepoEvent.Order(RepoOrder.Star))
+                            expanded.value = false
+                        }) {
                         Text(
                             text = "Sort by stars",
                             Modifier.padding(start = 12.dp),
@@ -75,7 +79,10 @@ fun GitReposScreen(viewModel: GitRepoListViewModel = hiltViewModel()) {
                     IconButton(modifier = Modifier
                         .width(MENU_BUTTON_WIDTH.dp)
                         .padding(end = 8.dp),
-                        onClick = { /*TODO*/ }) {
+                        onClick = {
+                            viewModel.onEvent(RepoEvent.Order(RepoOrder.Title))
+                            expanded.value = false
+                        }) {
                         Text(
                             text = "Sort by title",
                             Modifier.padding(start = 12.dp),
@@ -93,7 +100,7 @@ fun GitReposScreen(viewModel: GitRepoListViewModel = hiltViewModel()) {
             LoadingShimmerList(imageHeight = RECIPE_IMAGE_HEIGHT.dp)
         } else if (state.repos.isEmpty()) {
             NoRepoDataView() {
-                viewModel.refresh()
+                viewModel.onEvent(RepoEvent.Refresh)
             }
         } else {
             val collapsedState = remember() { mutableStateOf(-1) }
