@@ -16,6 +16,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import bit.hemant.git.trends.R
+import bit.hemant.git.trends.ui.theme.Typography
+import bit.hemant.git.trends.ui.theme.lightBody
 import bit.hemant.git.trends.ui.theme.mintGreen
 
 
@@ -57,8 +59,9 @@ fun NoRepoDataView(onClick: () -> Unit) {
                     text = "An alien is probably blocking your signal",
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
-                    style = MaterialTheme.typography.body2,
-                    modifier = Modifier.padding(vertical = 8.dp)
+                    style = Typography.bodySmall,
+                    modifier = Modifier.padding(vertical = 8.dp),
+                    color = lightBody
                 )
             }
 

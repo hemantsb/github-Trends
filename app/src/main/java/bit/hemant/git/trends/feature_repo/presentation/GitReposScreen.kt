@@ -50,15 +50,14 @@ fun GitReposScreen(viewModel: GitRepoListViewModel = hiltViewModel()) {
             LoadingShimmerList(imageHeight = RECIPE_IMAGE_HEIGHT.dp)
         } else if (state.repos.isEmpty()) {
             NoRepoDataView() {
-                Log.e("NOREPO", "refresh clicked")
                 viewModel.refresh()
             }
         } else {
-            var collapsedState = remember() { mutableStateOf(-1) }
+            val collapsedState = remember() { mutableStateOf(-1) }
             LazyColumn(modifier = Modifier.fillMaxSize()) {
                 items(state.repos) { repo ->
                     RepoItem(repo, collapsedState) {
-                        collapsedState.value = it
+                        collapsedState.value = if (collapsedState.value == it) -1 else it
                     }
                     Divider(
                         color = Color.LightGray,
