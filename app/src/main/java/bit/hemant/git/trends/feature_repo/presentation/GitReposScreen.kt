@@ -60,7 +60,7 @@ fun GitReposScreen(viewModel: GitRepoListViewModel = hiltViewModel()) {
                 IconButton(onClick = { expanded.value = true }) {
                     Icon(
                         imageVector = Icons.Default.MoreVert,
-                        contentDescription = "image",
+                        contentDescription = "three Dot Menu",
                         tint = Color.Gray,
                     )
                 }
