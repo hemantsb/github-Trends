@@ -17,10 +17,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import bit.hemant.git.trends.R
 import bit.hemant.git.trends.feature_repo.domain.util.RepoOrder
 import bit.hemant.git.trends.feature_repo.presentation.components.LoadingShimmerList
 import bit.hemant.git.trends.feature_repo.presentation.components.NoRepoDataView
@@ -54,7 +56,7 @@ fun GitReposScreen(viewModel: GitRepoListViewModel = hiltViewModel()) {
     viewModel.initRepoStore(repoStore)
 
     Scaffold(topBar = {
-        TopAppBar(title = { Text(text = "Trending") },
+        TopAppBar(title = { Text(text = stringResource(R.string.trending)) },
             backgroundColor = theme40,
             actions = {
                 IconButton(onClick = { expanded.value = true }) {
@@ -76,7 +78,7 @@ fun GitReposScreen(viewModel: GitRepoListViewModel = hiltViewModel()) {
                             expanded.value = false
                         }) {
                         Text(
-                            text = "Sort by stars",
+                            text = stringResource(R.string.sort_stars),
                             Modifier.padding(start = 12.dp),
                             style = Typography.headlineSmall,
                             color = lightBody
@@ -91,7 +93,7 @@ fun GitReposScreen(viewModel: GitRepoListViewModel = hiltViewModel()) {
                             expanded.value = false
                         }) {
                         Text(
-                            text = "Sort by title",
+                            text = stringResource(R.string.sort_title),
                             Modifier.padding(start = 12.dp),
                             style = Typography.headlineSmall,
                             color = lightBody

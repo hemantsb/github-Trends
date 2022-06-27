@@ -1,2 +1,5 @@
 <resources>
+    <string name="trending">Trending</string>
+    <string name="sort_stars">Sort by stars</string>
+    <string name="sort_title">Sort by title</string>
 </resources>
