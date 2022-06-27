@@ -12,9 +12,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import bit.hemant.git.trends.R
+import bit.hemant.git.trends.core.util.TestTag
 import bit.hemant.git.trends.feature_repo.domain.model.Repo
 import bit.hemant.git.trends.ui.theme.Typography
 import bit.hemant.git.trends.ui.theme.lightBody
@@ -25,7 +27,8 @@ fun RepoItem(item: Repo, collapsedState: MutableState<Int>, onItemClick: (index:
     Row(modifier = Modifier
         .fillMaxWidth()
         .padding(16.dp)
-        .clickable { onItemClick.invoke(item.id ?: -1) }) {
+        .clickable { onItemClick.invoke(item.id ?: -1) }
+        .testTag(TestTag.REPO_ITEM)) {
 
         Box(
             modifier = Modifier

@@ -1,10 +1,9 @@
 package bit.hemant.git.trends.feature_repo.presentation
 
+import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
-import androidx.compose.ui.test.onNodeWithContentDescription
-import androidx.compose.ui.test.onNodeWithText
-import androidx.compose.ui.test.performClick
 import bit.hemant.git.trends.MainActivity
+import bit.hemant.git.trends.core.util.TestTag
 import bit.hemant.git.trends.di.ApplicationModule
 import bit.hemant.git.trends.ui.theme.OctaTrendTheme
 import dagger.hilt.android.testing.HiltAndroidRule
@@ -46,6 +45,14 @@ class GitReposScreenTest {
         composeRule.onNodeWithText("Sort by stars").assertExists()
         composeRule.onNodeWithText("Sort by title").assertExists()
 
+    }
+
+    @Test
+    fun expandedRepoTest() {
+        Thread.sleep(2000)
+        composeRule.onAllNodesWithContentDescription("star")[0].assertDoesNotExist()
+        composeRule.onAllNodesWithTag(TestTag.REPO_ITEM)[0].performClick()
+        composeRule.onAllNodesWithContentDescription("star")[0].assertExists()
     }
 
 }
