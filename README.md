@@ -1,14 +1,14 @@
 # github-Trends
-Fetches Github Okta Trending Repositories 
+## _Fetches Github Okta Trending Repositories_
 
 This project uses
-MVVM
-Compose
-Room DB
-Unit Tests
-Compose Navigation
-Coroutines
-Hilt
-Retrofit
-Data store
+- MVVM
+- Compose
+- Room DB
+- Unit Tests
+- Compose Navigation
+- Coroutines
+- Hilt
+- Retrofit
+- Data store
 
